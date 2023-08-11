@@ -3,7 +3,6 @@ import express from 'express';
 import morgan from 'morgan';
 import { errorMiddleware } from './app/middlewares/index.js';
 import init from './app/startup/index.js';
-import moment from 'moment';
 
 
 const app = express();

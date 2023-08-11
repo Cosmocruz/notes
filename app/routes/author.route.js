@@ -6,15 +6,15 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     const author = new Author();
-    const result = await author.find({});
-    return result;
+    const result = await author.getAuthors();
+    res.send(result);
 });
 
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const author = new Author();
     const result = await author.getAuthorById(id);
-    return result;
+    res.send(result);
 });
 
 router.post('/', async (req, res) => {
@@ -27,5 +27,7 @@ router.post('/', async (req, res) => {
         email,
         gender,
     });
-    return result;
+    res.status(201).send(result);
 });
+
+export default router;
