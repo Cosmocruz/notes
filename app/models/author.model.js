@@ -1,5 +1,6 @@
+import moment from 'moment';
 import { Schema, model } from 'mongoose';
-
+import { TIME_FORMAT } from '../constants/index.js';
 const authorSchema = new Schema(
     {
         name: {
@@ -25,15 +26,19 @@ const authorSchema = new Schema(
                 validator: function (v) {
                     return /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/.test(v);
                 },
-                message: (props) => `${props.value} is not a v=valid email!`,
+                message: (props) => `${props.value} is not a valid email!`,
             },
         },
         dob: {
             type: Date,
             required: true,
+            get: (dob) => {
+                return moment(dob).format(TIME_FORMAT);
+            },
         },
     },
     {
+        versionKey: false,
         timestamps: true,
         toJSON: {
             virtuals: true,
@@ -45,6 +50,12 @@ const authorSchema = new Schema(
         },
     }
 );
+
+authorSchema.virtual('notes', {
+    ref: 'Note',
+    localField: '_id',
+    foreignField: 'author',
+});
 
 const author = model('Author', authorSchema);
 

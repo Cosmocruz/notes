@@ -6,9 +6,20 @@ const router = Router();
 
 router.get('/', async (req, res) => {
     const note = new Note();
-    const result = note.getAllNotes();
+    const result = await note.getAllNotes();
+
     res.status(200).send(result);
 });
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    const note = new Note();
+    const result = await note.getNoteById({ id });
+
+    res.status(200).send(result);
+});
+
+
 
 router.post('/', [authMiddleware], async (req, res) => {
     const { description, tags, title } = req.body;

@@ -12,7 +12,7 @@ class Note {
     }
 
     async getNoteById({ id }) {
-        const result = await note.findById(id);
+        const result = await note.findById(id).populate({ path: 'author', select: 'name dob -_id' });
         return result;
     }
 }
