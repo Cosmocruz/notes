@@ -1,3 +1,4 @@
+import ApiError from '../errors/api.error.js';
 import { author } from './../models/index.js';
 
 class Author {
@@ -8,6 +9,9 @@ class Author {
 
     async getAuthorById({ id }) {
         const authors = await author.findById(id).populate('notes');
+
+        if (!authors) throw new ApiError(`Resource not found.`, 404);
+
         return authors;
     }
 

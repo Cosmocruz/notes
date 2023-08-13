@@ -13,6 +13,7 @@ class Note {
 
     async getNoteById({ id }) {
         const result = await note.findById(id).populate({ path: 'author', select: 'name dob -_id' });
+        if (!result) throw new ApiError(`Resource not found.`, 404);
         return result;
     }
 }
