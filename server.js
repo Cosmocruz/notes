@@ -2,12 +2,19 @@ import 'dotenv/config';
 import 'express-async-errors';
 import express from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
 import { errorMiddleware } from './app/middlewares/index.js';
 import init from './app/startup/index.js';
 
-
 const app = express();
 
+const corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200,
+    //exposedHeaders: 'header_Name',
+};
+
+app.use(cors(corsOptions));
 app.use(morgan('dev'));
 app.use(express.json());
 
