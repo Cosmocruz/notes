@@ -1,3 +1,4 @@
+import ApiError from '../errors/api.error.js';
 import { note } from './../models/index.js';
 
 class Note {
