@@ -6,6 +6,19 @@ import cors from 'cors';
 import { errorMiddleware } from './app/middlewares/index.js';
 import init from './app/startup/index.js';
 
+
+
+// to handle, unhandled  exception
+process.on('uncaughtException', (err) => {
+    console.log({ error: err.name, message: err.message });
+    // shut down is compulsory because app is in dirty state
+   // server.close(() => {
+        console.log('>>> Ununcaught exception occured! Shutting down...');
+        process.exit(1);
+    //});
+});
+
+
 const app = express();
 
 const corsOptions = {
@@ -33,6 +46,17 @@ app.all('*', (req, res) => {
 // error middleware
 app.use(errorMiddleware);
 
-app.listen(process.env.PORT, () => {
+const server = app.listen(process.env.PORT, () => {
     console.log('>> Server runnin on port ', process.env.PORT);
 });
+
+// to handle, unhandled promise rejection outside express
+process.on('unhandledRejection', (err) => {
+    console.log({ error: err.name, message: err.message });
+    // shuting down is optional
+    server.close(() => {
+        console.log('>>> Unhandled rejection occured! Shutting down...');
+        process.exit(1);
+    });
+});
+
