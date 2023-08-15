@@ -7,17 +7,22 @@ import { errorMiddleware } from './app/middlewares/index.js';
 import init from './app/startup/index.js';
 
 
-
+let server;
 // to handle, unhandled  exception
 process.on('uncaughtException', (err) => {
     console.log({ error: err.name, message: err.message });
+
     // shut down is compulsory because app is in dirty state
-   // server.close(() => {
+    if (server) {
+        server.close(() => {
+            console.log('>>> Ununcaught exception occured! Closing express and Shutting down...');
+            process.exit(1);
+        });
+    } else {
         console.log('>>> Ununcaught exception occured! Shutting down...');
         process.exit(1);
-    //});
+    }
 });
-
 
 const app = express();
 
@@ -46,7 +51,7 @@ app.all('*', (req, res) => {
 // error middleware
 app.use(errorMiddleware);
 
-const server = app.listen(process.env.PORT, () => {
+server = app.listen(process.env.PORT, () => {
     console.log('>> Server runnin on port ', process.env.PORT);
 });
 
