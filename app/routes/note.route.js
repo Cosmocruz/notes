@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     const note = new Note();
     const result = await note.getAllNotes();
 
-    res.status(200).send(result);
+    res.status(200).send(result).json();
 });
 router.get('/:id', async (req, res) => {
     const { id } = req.params;

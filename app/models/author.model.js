@@ -1,6 +1,8 @@
 import moment from 'moment';
 import { Schema, model } from 'mongoose';
 import { TIME_FORMAT } from '../constants/index.js';
+import bcrypt from 'bcryptjs';
+
 const authorSchema = new Schema(
     {
         name: {
@@ -36,6 +38,12 @@ const authorSchema = new Schema(
                 return moment(dob).format(TIME_FORMAT);
             },
         },
+        password: {
+            type: String,
+            lowercase: true,
+            minLength: 6,
+            required: true,
+        },
     },
     {
         versionKey: false,
@@ -55,6 +63,13 @@ authorSchema.virtual('notes', {
     ref: 'Note',
     localField: '_id',
     foreignField: 'author',
+});
+
+authorSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+
+    this.password = await bcrypt.hash(this.password, 8);
+    return next();
 });
 
 const author = model('Author', authorSchema);

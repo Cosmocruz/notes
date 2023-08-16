@@ -15,12 +15,13 @@ class Author {
         return authors;
     }
 
-    async AddAuthor({ name, gender, email, dob }) {
+    async AddAuthor({ name, gender, email, dob, password }) {
         const result = await author.create({
             name,
             gender,
             dob,
             email,
+            password,
         });
 
         return result;
