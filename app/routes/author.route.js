@@ -2,6 +2,7 @@ import { Router } from 'express';
 import moment from 'moment';
 import { TIME_FORMAT } from '../constants/index.js';
 import { Author } from './../services/index.js';
+import authMiddleware from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
@@ -11,7 +12,7 @@ router.get('/', async (req, res) => {
     res.send(result);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', [authMiddleware], async (req, res) => {
     const { id } = req.params;
 
     const author = new Author();
@@ -20,7 +21,7 @@ router.get('/:id', async (req, res) => {
     res.send(result);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', [authMiddleware], async (req, res) => {
     const { name, dob, email, gender, password } = req.body;
 
     const author = new Author();
