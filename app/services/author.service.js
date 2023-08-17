@@ -7,6 +7,11 @@ class Author {
         return authors;
     }
 
+    async getAuthorbyEmail({ email }) {
+        let result = await author.find({ email });
+        return result;
+    }
+
     async getAuthorById({ id }) {
         const authors = await author.findById(id).populate('notes');
 

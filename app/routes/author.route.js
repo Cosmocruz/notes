@@ -21,7 +21,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { name, dob, email, gender } = req.body;
+    const { name, dob, email, gender, password } = req.body;
 
     const author = new Author();
     const result = await author.AddAuthor({
@@ -29,6 +29,7 @@ router.post('/', async (req, res) => {
         dob: moment(dob, TIME_FORMAT).toDate(),
         email,
         gender,
+        password,
     });
     res.status(201).send(result);
 });

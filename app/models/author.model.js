@@ -40,7 +40,7 @@ const authorSchema = new Schema(
         },
         password: {
             type: String,
-            lowercase: true,
+            // lowercase: true,
             minLength: 6,
             required: true,
         },
@@ -67,6 +67,8 @@ authorSchema.virtual('notes', {
 
 authorSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
+
+    console.log(this.password);
 
     this.password = await bcrypt.hash(this.password, 8);
     return next();
